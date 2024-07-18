@@ -1,5 +1,9 @@
 # 大纲
 
+## 已完成的章节
+
+[01-什么是fault-proof](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/01-what-is-fault-proof.md)
+
 ## 介绍
 
 - Fault Proof 的定义

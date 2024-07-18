@@ -17,7 +17,7 @@
 
 关键角色包括：Proposer、L2OutputOracle 和 Portal 合约。请参考下图。
 
-![image](https://hackmd.io/_uploads/ByEDbsL_0.png)
+![image](./resources/withdrawBefore.png)
 
 
 分析这些角色，哪些是由 Optimism 单方面负责运营的中心化角色？
