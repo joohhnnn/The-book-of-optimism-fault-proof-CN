@@ -3,6 +3,15 @@
 ## 已完成的章节
 
 [01-什么是fault-proof](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/01-what-is-fault-proof.md)
+[02-fault-dispute-game](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/02-fault-dispute-game.md)
+
+## 待完成章节
+
+03-cannon.md
+
+04-op-program.md
+
+05-op-challenger.md
 
 ## 介绍
 
