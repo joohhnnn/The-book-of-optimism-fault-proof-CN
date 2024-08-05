@@ -6,9 +6,10 @@
 
 [02-fault-dispute-game](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/02-fault-dispute-game.md)
 
+[03-Cannon](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/03-cannon.md)
+
 ## 待完成章节
 
-03-cannon.md
 
 04-op-program.md
 
