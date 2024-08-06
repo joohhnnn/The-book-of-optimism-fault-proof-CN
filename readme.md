@@ -12,33 +12,37 @@
 
 [05-op-challenger](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/05-op-challenger.md)
 
-## 介绍
+## TL;DR
 
-- Fault Proof 的定义
-- Fault Proof 存在的原因
+- Fault Proof: 替代原有的中心化的proposer
+- Fault Proof Game: 通过二分法来找到双发达成共识的最小指令处，并在链上验证
+- Cannon: 链下用于生成链上move/step数据的程序
+- op-program: 供Cannon使用的ELF文件原型以及Pre-Image的数据提供service
+- op-challenger: 用来自动调用cannon和op-program的game操作程序
 
-## 组件名词解释
+## 链上地址
 
-- 通过日常生活中的例子解释Fault Proof的概念
-
-## 代码层面
-
-- 各组件简介
-  - Fault Proof Program (FPP)
-  - Fault Proof Virtual Machine (FPVM)
-  - Dispute Game Protocol
-- 组件间的联系
-- 实际代码示例
-  - FPP的基本结构
-  - 如何在FPVM中运行FPP
-  - Dispute Game Protocol的实现和应用
-
-## 实际应用中的 Fault Proof 案例分析
-
-- 案例1: 示例应用
-- 案例2: 复杂应用场景中的 Fault Proof
+- [MIPS](https://etherscan.io/address/0x0f8EdFbDdD3c0256A80AD8C0F2560B1807873C9c)
+- [DisputeGameFactoryProxy](https://etherscan.io/address/0xe5965Ab5962eDc7477C8520243A95517CD252fA9)
+- [Game](https://etherscan.io/address/0x68bf02b87d236c07e6cf4a7c851041745f45875c)(Example)
+- [PreimageOracle](https://etherscan.io/address/0xD326E10B8186e90F4E2adc5c13a2d0C137ee8b34)
+- [AnchorStateRegistryProxy](https://etherscan.io/address/0x18DAc71c228D1C32c99489B7323d441E1175e443)
 
 ## 参考资料
 
-- 相关文献
-- 技术文档和教程
+### 文章
+- [Public-OP-Stack-Fault-Proofs-Sherlock-Competition-Handbook](https://oplabs.notion.site/Public-OP-Stack-Fault-Proofs-Sherlock-Competition-Handbook-e4cfdf210a5c45c79230af19653163cc)
+- [Docs](https://docs.optimism.io/stack/protocol/fault-proofs/explainer)
+- [Specs](https://github.com/ethereum-optimism/specs/blob/main/specs/fault-proof/index.md)
+- [Building a Fault Proof System worthy of the Superchain](https://blog.oplabs.co/building-a-fault-proof-system/)
+- [Maximizing fault proof modularity with a composable pre-image oracle](https://blog.oplabs.co/composable-pre-image-oracle/)
+- [Fault Proof Deep-Dive Part 1: MIPS.sol](https://blog.oplabs.co/mips-sol/)
+- [Fault Proof Deep-Dive Part 2: Cannon](https://blog.oplabs.co/fault-proof-deep-dive-part-2-cannon/)
+- [CANNON CANNON CANNON: Introducing Cannon](https://blog.oplabs.co/cannon-cannon-cannon-introducing-cannon/)
+- [The game’s afoot: designing modular dispute games for the OP Stack’s Fault Proof System](https://blog.oplabs.co/dispute-games/)
+
+### 视频
+- [Walkthrough: OP Stack Fault Proof System alpha release](https://www.youtube.com/watch?v=nIN5sNc6nQM&t=727s)
+- [Peek a live code-walkthrough of the new OP Stack fault proof code](https://www.youtube.com/watch?v=2n9qTmsdYbQ&t=801s) (Highly recommend)
+- [Onchain Summit: Fault Proof Workshop by Protolambda](https://www.youtube.com/watch?v=RGts3PSg4F8)
+- [Keys in Mordor Summit: Cannon & Fault Proofs](https://www.youtube.com/watch?v=ASLMj70V0Ao&t=3218s)
