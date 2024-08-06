@@ -10,9 +10,7 @@
 
 [04-op-program](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/04-op-program.md)
 
-## 待完成章节
-
-05-op-challenger.md
+[05-op-challenger](https://github.com/joohhnnn/The-book-of-optimism-fault-proof-CN/blob/main/05-op-challenger.md)
 
 ## 介绍
 
