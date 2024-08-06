@@ -24,9 +24,11 @@ game-tree 是一个关键概念。例如，一个 game-tree X 的根节点代表
 
 ### [Claims](https://github.com/ethereum-optimism/specs/blob/main/specs/fault-proof/stage-one/fault-dispute-game.md#claims)
 
-Claims 可以理解为 L2 交易中某个指令所代表的 state hash。
+Claims 可以理解为 L2 交易中某个指令执行后所代表的 state hash，state为MIPS虚拟机的状态，如内存分布，寄存器分布等。
 ![image](./resources/claims.png)
-如图所示，为某笔交易第1-16指令的执行流，每个执行都会产生一个 state hash，即 Claim。
+如图所示，为某笔交易第1-16指令的执行流，每个执行都会产生一个新的state hash，即 Claim。
+
+注: Root Claim 比较特殊，Root Claim和旧的Output Hash一致，Output由 stateRoot, messagePasserStorageRoot, latestBlockhash三部分组成
 
 这里引入一个概念 `trace index`。
 
