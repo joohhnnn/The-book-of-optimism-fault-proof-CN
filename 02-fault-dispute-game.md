@@ -93,7 +93,7 @@ Moves 分为 Attack 和 Defend，但不必过分纠结这两个概念，我们�
 
 [Full code link](https://github.com/ethereum-optimism/optimism/blob/d091bb33ceba0931205584d88b8c2bd84404e466/packages/contracts-bedrock/src/dispute/DisputeGameFactory.sol#L84)
 
-```
+```solidity
 
     function create(
         GameType _gameType,
@@ -151,7 +151,7 @@ Moves 分为 Attack 和 Defend，但不必过分纠结这两个概念，我们�
 2. 确定提交的下一个 claim 数据是否有效，进行特定情况的检查，确保每次 move 的 bond 抵押金正确，并确保计时器正确，重新计算剩余棋钟时间。
 3. 将结果保存到 claimData 和 subgame 中以供后续操作使用。
 
-```
+```solidity
     function move(Claim _disputed, uint256 _challengeIndex, Claim _claim, bool _isAttack) public payable virtual {
 
         ClaimData memory parent = claimData[_challengeIndex];
@@ -232,7 +232,7 @@ attack在此仅有一种情况：双方都在instruction 8处达到了共识（*
 2. 在 VM 中执行以判断有效性，并在 defend 情况下确定具体属于哪种情况。
 3. 如果反驳成功，则记录数据。
 
-```
+```solidity
 function step(
     uint256 _claimIndex,
     bool _isAttack,
@@ -294,11 +294,11 @@ resolveClaim的操作需要分两种情况：
 
 - 处理子游戏，入参`_numToResolve` 为 0。
     1. 判断是当前棋钟是否已经耗尽
-    ```
+    ```solidity
         if (challengeClockDuration.raw() < MAX_CLOCK_DURATION.raw()) revert ClockNotExpired();
     ```
     2. 判断否为最细粒度的子游戏，如果是，将支付的bond计入反驳成功者的账户，同时将子游戏记做已解决，并返回。
-    ```
+    ```solidity
         if (challengeIndicesLen == 0 && _claimIndex != 0) {
             address counteredBy = subgameRootClaim.counteredBy;
             address recipient = counteredBy == address(0) ? subgameRootClaim.claimant : counteredBy;
@@ -314,12 +314,12 @@ resolveClaim的操作需要分两种情况：
 
     1. 判断是当前棋钟是否已经耗尽
 
-    ```
+    ```solidity
         if (challengeClockDuration.raw() < MAX_CLOCK_DURATION.raw()) revert ClockNotExpired();
     ```
 
     2. 判断当前claim是否首次被执行resolveClaim，如果是，创建并初始化checkpoint以应对多次transaction共同完成resolveClaim的情况。
-    ```
+    ```solidity
         // If the checkpoint does not currently exist, initialize the current left most position as max u128.
         if (!checkpoint.initialCheckpointComplete) {
             checkpoint.leftmostPosition = Position.wrap(type(uint128).max);
@@ -330,7 +330,7 @@ resolveClaim的操作需要分两种情况：
     ```
     3. 循环校验子任务是否全部解决，并在循环中确保[最左边的索取激励](https://github.com/ethereum-optimism/specs/blob/dfa8ea9568b0e35827be763fa8e6a2eeb9d90704/specs/fault-proof/stage-one/bond-incentives.md#leftmost-claim-incentives)。
 
-    ```
+    ```solidity
         uint256 lastToResolve = checkpoint.subgameIndex + _numToResolve;
         uint256 finalCursor = lastToResolve > challengeIndicesLen ? challengeIndicesLen : lastToResolve;
         for (uint256 i = checkpoint.subgameIndex; i < finalCursor; i++) {
@@ -356,7 +356,7 @@ resolveClaim的操作需要分两种情况：
     
     4. 如果claim没有未结局的子游戏，根据当前claim的反驳状态来确定反驳者,并分发bond奖励。
 
-    ```
+    ```solidity
         // Increase the checkpoint's cursor position by the number of children that were checked.
         checkpoint.subgameIndex = uint32(finalCursor);
 
@@ -398,7 +398,7 @@ resolve：
 1. 验证解决状态，并更新全局状态
 2. 更新ANCHOR_STATE_REGISTRY中L2的最新l2BlockNumber和root hash。
 
-```
+```solidity
     function resolve() external returns (GameStatus status_) {
         // INVARIANT: Resolution cannot occur unless the game is currently in progress.
         if (status != GameStatus.IN_PROGRESS) revert GameNotInProgress();

@@ -16,7 +16,7 @@ monitor 组件负责订阅 L1 上的区块。每当有新的区块生成时，�
 使用 [StartMonitoring()](https://github.com/ethereum-optimism/optimism/blob/develop/op-challenger/game/monitor.go#L152) 函数启动监控。`onNewL1Head()` 函数作为回调参数传入 `resubscribeFunction()`，并最终注册到 `eth.WatchHeadChanges` 中。
 每 10 秒钟检索一次，当检索到新区块后，将该区块的哈希和区块号传入 `progressGames()` 进行处理。
 
-```
+```golang
 
 func (m *gameMonitor) onNewL1Head(ctx context.Context, sig eth.L1BlockRef) {
 	m.clock.SetTime(sig.Time)
@@ -53,7 +53,7 @@ func (m *gameMonitor) StartMonitoring() {
 
 [progressGames](https://github.com/ethereum-optimism/optimism/blob/f940301caf531996eee4172e710b0decb7b78dde/op-challenger/game/monitor.go#L106) 函数在监听到新的区块后执行，其主要作用是获取所有有效的 game，并将这些 game 传入 Schedule 中用于后续的任务派发。需要注意的是，schedule 分为多个类别，如 bondSchedule（用于管理 claim 对应的 bond）和 pre-image schedule（用于上传 pre-image 数据）。我们在这里仅针对最基础的 move 和 step 的 schedule 进行讲解。
 
-```
+```golang
 func (m *gameMonitor) progressGames(ctx context.Context, blockHash common.Hash, blockNumber uint64) error {
 	minGameTimestamp := clock.MinCheckedTimestamp(m.clock, m.gameWindow)
 	games, err := m.source.GetGamesAtOrAfter(ctx, blockHash, minGameTimestamp)
@@ -83,7 +83,7 @@ func (m *gameMonitor) progressGames(ctx context.Context, blockHash common.Hash, 
 
 [schedule()](https://github.com/ethereum-optimism/optimism/blob/f940301caf531996eee4172e710b0decb7b78dde/op-challenger/game/scheduler/coordinator.go#L60) 函数处理接收到的 game，并在 createJob 中判断 game 是否需要新的子操作，然后通过 enqueueJob 函数将所有的子操作添加到 jobQueue 中进行传递。
 
-```
+```golang
 func (c *coordinator) schedule(ctx context.Context, games []types.GameMetadata, blockNumber uint64) error {
     
         ……
@@ -117,7 +117,7 @@ func (c *coordinator) schedule(ctx context.Context, games []types.GameMetadata, 
 ### 生成 action
 当 jobQueue 中出现数据后，需要在 [CalculateNextActions()](https://github.com/ethereum-optimism/optimism/blob/f940301caf531996eee4172e710b0decb7b78dde/op-challenger/game/fault/solver/game_solver.go#L26) 中将这些子任务信号转化为具体的 action。以 step 操作为例，当 game depth 达到 MaxDepth 时，我们会生成对应 step 的 action。
 
-```
+```golang
 func (s *GameSolver) CalculateNextActions(ctx context.Context, game types.Game) ([]types.Action, error) {
 
         ……
@@ -140,7 +140,7 @@ func (s *GameSolver) CalculateNextActions(ctx context.Context, game types.Game) 
 	return actions, nil
 }
 ```
-```
+```golang
 func (s *GameSolver) calculateStep(ctx context.Context, game types.Game, claim types.Claim, agreedClaims *honestClaimTracker) (*types.Action, error) {
 	if claim.CounteredBy != (common.Address{}) {
 		return nil, nil
@@ -163,7 +163,7 @@ func (s *GameSolver) calculateStep(ctx context.Context, game types.Game, claim t
 }
 ```
 
-```
+```golang
 func (s *claimSolver) AttemptStep(ctx context.Context, game types.Game, claim types.Claim, honestClaims *honestClaimTracker) (*StepData, error) {
 
         ……
@@ -184,7 +184,7 @@ func (s *claimSolver) AttemptStep(ctx context.Context, game types.Game, claim ty
 
 `GetStepData()` 函数间接调用了 [DoGenerateProof()](https://github.com/ethereum-optimism/optimism/blob/develop/op-challenger/game/fault/trace/vm/executor.go#L74) 函数，启动了 Cannon 以生成 step 所需的 state data 和 proof data。
 
-```
+```golang
 func (e *Executor) DoGenerateProof(ctx context.Context, dir string, begin uint64, end uint64, extraVmArgs ...string) error {
         ……
 	args := []string{
@@ -232,7 +232,7 @@ func (e *Executor) DoGenerateProof(ctx context.Context, dir string, begin uint64
 - 判断操作类型是否为 Attack/Defend。
 - 判断是否为 Step 操作。
 - 判断是否可以从 L2BlockNumber 角度否定 root claim。
-```
+```golang
 func (r *FaultResponder) PerformAction(ctx context.Context, action types.Action) error {
 	if action.OracleData != nil {
 		var preimageExists bool

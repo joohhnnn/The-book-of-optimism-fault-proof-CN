@@ -18,7 +18,7 @@ ELF（Executable and Linkable Format）文件是一种广泛使用的文件格�
 
 [runDerivation()](https://github.com/ethereum-optimism/optimism/blob/develop/op-program/client/program.go#L63) 函数实现了 op-stack 中 L2 state 变化的执行过程。
 
-```
+```golang
 // runDerivation executes the L2 state transition, given a minimal interface to retrieve data.
 func runDerivation(logger log.Logger, cfg *rollup.Config, l2Cfg *params.ChainConfig, l1Head common.Hash, l2OutputRoot common.Hash, l2Claim common.Hash, l2ClaimBlockNum uint64, l1Oracle l1.Oracle, l2Oracle l2.Oracle) error {
 	l1Source := l1.NewOracleL1Client(logger, l1Oracle, l1Head)
@@ -48,7 +48,7 @@ func runDerivation(logger log.Logger, cfg *rollup.Config, l2Cfg *params.ChainCon
 
 因为 Host 是随着 Cannon 的启动命令启动的，因此 Host 是 Cannon 的子模块，二者通过一对 `FileChannel` 对象进行通讯，例如 `pClientRW, pOracleRW`，`pOracleRW` 通道在创建子命令时传递到子程序，并通过如 `pWriter := os.NewFile(6, "pOracleWriter")` 的方式获取。
 
-```
+```golang
 func NewProcessPreimageOracle(name string, args []string) (*ProcessPreimageOracle, error) {
 	if name == "" {
 		return &ProcessPreimageOracle{}, nil
@@ -76,7 +76,7 @@ func NewProcessPreimageOracle(name string, args []string) (*ProcessPreimageOracl
 
 在子进程代码中使用这些描述符：
 
-```
+```golang
 // CreatePreimageChannel returns a FileChannel for the preimage oracle in a detached context
 func CreatePreimageChannel() oppio.FileChannel {
 	r := os.NewFile(PClientRFd, "preimage-oracle-read")
@@ -89,7 +89,7 @@ func CreatePreimageChannel() oppio.FileChannel {
 
 核心函数为 [GetPreimage()](https://github.com/ethereum-optimism/optimism/blob/develop/op-program/host/prefetcher/prefetcher.go#L80) 函数，此函数收到由 Cannon 传过来的 key，并对内容进行获取。
 
-```
+```golang
 func (p *Prefetcher) GetPreimage(ctx context.Context, key common.Hash) ([]byte, error) {
 	p.logger.Trace("Pre-image requested", "key", key)
 	pre, err := p.kvStore.Get(key)

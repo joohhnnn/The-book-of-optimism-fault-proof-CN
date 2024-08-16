@@ -38,7 +38,7 @@ MIPS 主要包含两种类型的指令：
 两种关键类型的数据结构包括：
 1. State（状态）
 
-```
+```solidity
     struct State {
         bytes32 memRoot;
         bytes32 preimageKey;
@@ -84,7 +84,7 @@ CANNON 在链上的实体为 MIPS.sol 文件，其中最主要的部分为 [step
 - 第 4 步：[详细代码](https://github.com/ethereum-optimism/optimism/blob/5e317379fae65b76f5a6ee27581f0e62d2fe017a/packages/contracts-bedrock/src/cannon/MIPS.sol#L134)
 - 第 5 步：[详细代码](https://github.com/ethereum-optimism/optimism/blob/5e317379fae65b76f5a6ee27581f0e62d2fe017a/packages/contracts-bedrock/src/cannon/libraries/MIPSInstructions.sol#L41)
 
-```
+```solidity
    function step(bytes calldata _stateData, bytes calldata _proof, bytes32 _localContext) public returns (bytes32) {
         unchecked {
             State memory state;
@@ -194,7 +194,7 @@ CANNON 在链下主要体现在 [Cannon](https://github.com/ethereum-optimism/op
 #### 执行
 当我们执行 `cannon run -h` 时，可以看到运行时需要传入的 flag。通过这些 flag，我们可以深入理解 Cannon 链下执行的机制。
 
-```
+```shell
 ./bin/cannon run -h
 NAME:
    cannon run - Run VM step(s) and generate proof data to replicate onchain.
@@ -235,7 +235,7 @@ OPTIONS:
 
 Cannon 的命令实际上并不是为手动单次执行设计的，而是为了 op-challenger 而设计。让我们看一下 op-challenger 中是如何使用的。
 
-```
+```golang
 func (e *Executor) GenerateProof(ctx context.Context, dir string, i uint64) error {
 	snapshotDir := filepath.Join(dir, snapsDir)
 	start, err := e.selectSnapshot(e.logger, snapshotDir, e.absolutePreState, i)
@@ -271,7 +271,7 @@ func (e *Executor) GenerateProof(ctx context.Context, dir string, i uint64) erro
 可以看到，链下的 Go 代码中的 step 逻辑与链上 Solidity 的 step 逻辑高度一致，首先将内存等状态加载到固定位置，然后在 mipsStep() 中进一步处理，例如判定是否为 syscall 等操作。
 
 
-```
+```golang
 func (m *InstrumentedState) Step(proof bool) (wit *mipsevm.StepWitness, err error) {
 	m.preimageOracle.Reset()
 	m.memoryTracker.Reset(proof)
@@ -303,7 +303,7 @@ func (m *InstrumentedState) Step(proof bool) (wit *mipsevm.StepWitness, err erro
 	return
 }
 ```
-```
+```golang
 func (m *InstrumentedState) mipsStep() error {
 	if m.state.Exited {
 		return nil
